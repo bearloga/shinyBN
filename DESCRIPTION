@@ -15,7 +15,9 @@ Imports:
     bnlearn (>= 4.4),
     DiagrammeR (>= 1.0.0),
     purrr (>= 0.2.5),
-    dplyr (>= 0.7.8)
+    dplyr (>= 0.7.8),
+    tidyr (>= 0.8.2),
+    magrittr (>= 1.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

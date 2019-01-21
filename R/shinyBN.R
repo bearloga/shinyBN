@@ -22,10 +22,6 @@ NULL
 #' @param ... parameters to pass to [shiny::shinyApp]
 #' @examples \dontrun{
 #' launch_shinyBN(pavement_model)
-#'
-#' doc <- system.file("extdata", "pavement_example.md", package = "shinyBN")
-#' title <- "Interactive 'Pavement' Bayesian network with ShinyBN"
-#' launch_shinyBN(pavement_model, app_title = title, documentation_md = doc)
 #' }
 #' @import shiny
 #' @export
@@ -91,13 +87,29 @@ launch_shinyBN <- function(object, app_title = NULL,
     optional_documentation
   )
 
+  initial_probabilities <- bnlearn::cpdist(object, node_names, evidence = TRUE) %>%
+    dplyr::mutate_all(as.character) %>%
+    tidyr::gather("node", "value") %>%
+    dplyr::count(node, value) %>%
+    dplyr::group_by(node) %>%
+    dplyr::transmute(value = value, prop = n / sum(n)) %>%
+    dplyr::ungroup() %>%
+    split(.$node) %>%
+    purrr::map(~ stats::setNames(.x$prop, .x$value))
+
   server <- function(input, output, session) {
     modules <- reactiveValues()
+    probabilities <- reactiveValues()
     for (node_name in names(node_names)) {
+      probabilities[[node_name]] <- reactive({ initial_probabilities[[node_name]] })
+    }
+    for (node_name in names(node_names)) {
+      force(node_name)
       possibilities <- value_labels[[node_name]]
       modules[[node_name]] <- callModule(
         module = nodeServer, id = node_name,
-        possibilities = possibilities
+        possibilities = possibilities,
+        probabilities = probabilities[[node_name]]
       )
     }
     output$bn <- DiagrammeR::renderGrViz({

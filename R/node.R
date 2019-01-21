@@ -2,7 +2,7 @@ nodeUI <- function(id, label, choices) {
   ns <- shiny::NS(id)
   width <- paste0(max(250, 75 * length(choices)), "px")
   shiny::tagList(
-    shiny::plotOutput(ns("probabilities"), height = "200px", width = width),
+    shiny::plotOutput(ns("probs"), height = "200px", width = width),
     shiny::selectInput(
       ns("choices"), label,
       choices = c("(Unobserved)", choices), selected = "(Unobserved)",
@@ -11,13 +11,15 @@ nodeUI <- function(id, label, choices) {
   )
 }
 
-nodeServer <- function(input, output, session, possibilities) {
-  force(possibilities)
-  output$probabilities <- shiny::renderPlot({
+nodeServer <- function(input, output, session,
+                       possibilities,
+                       probabilities) {
+  # force(possibilities)
+  output$probs <- shiny::renderPlot({
     n <- length(possibilities)
     if (input$choices == "(Unobserved)") {
       # Return estimated probabilities
-      x <- stats::setNames(rep(1 / n, n), possibilities)
+      x <- probabilities()
     } else {
       x <- stats::setNames(rep(0, n), possibilities)
       x[input$choices] <- 1.0

@@ -34,9 +34,5 @@ Launch the Shiny-powered app to visualize and interact with a
 \examples{
 \dontrun{
 launch_shinyBN(pavement_model)
-
-doc <- system.file("extdata", "pavement_example.md", package = "shinyBN")
-title <- "Interactive 'Pavement' Bayesian network with ShinyBN"
-launch_shinyBN(pavement_model, app_title = title, documentation_md = doc)
 }
 }
