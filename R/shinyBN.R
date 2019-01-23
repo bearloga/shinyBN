@@ -72,7 +72,7 @@ launch_shinyBN <- function(object, app_title = NULL,
   node_uis <- purrr::map(node_names, generate_nodeUI)
 
   if (!is.null(app_title))
-    optional_title <- titlePanel(app_title)
+    optional_title <- h1(app_title)
   else optional_title <- NULL
   if (!is.null(documentation_md))
     optional_documentation <- withMathJax(includeMarkdown(documentation_md))
@@ -80,10 +80,11 @@ launch_shinyBN <- function(object, app_title = NULL,
 
   ui <- fluidPage(
     optional_title,
-    fluidRow(
-      column(DiagrammeR::grVizOutput("bn", width = "90%"), width = 4),
-      column(tagList(node_uis), width = 8)
+    div(
+      style = "display:inline-block; margin: 0 40px 20px 10px;",
+      DiagrammeR::grVizOutput("bn", width = "400px")
     ),
+    tagList(node_uis),
     optional_documentation
   )
 

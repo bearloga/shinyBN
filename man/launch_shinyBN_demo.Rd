@@ -4,11 +4,14 @@
 \alias{launch_shinyBN_demo}
 \title{Launch example}
 \usage{
-launch_shinyBN_demo(...)
+launch_shinyBN_demo(model = c("pavement", "tasting"), ...)
 }
 \arguments{
+\item{model}{"pavement" or "tasting"}
+
 \item{...}{parameters to pass to \link[shiny:shinyApp]{shiny::shinyApp}}
 }
 \description{
-Launches the app using the \link{pavement_model} data.
+Launches the app for interacting with either \link{pavement_model}
+or \link{tasting_model}.
 }
