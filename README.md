@@ -1,4 +1,4 @@
-# Interactive Bayesian Networks with ShinyBN
+# \[WIP\] Interactive Bayesian Networks with ShinyBN
 
 The primary function `launch_shinyBN` is used to launch a Shiny app to make it easy to work with a `bn.fit` object from the [bnlearn](http://www.bnlearn.com/) package.
 
